@@ -1,0 +1,30 @@
+*
+{
+    margin: 0;
+    padding: 0;
+}
+
+html,
+body
+{
+    overflow: hidden;
+
+}
+body > canvas {
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 100;
+    opacity: 1.0;
+    display: none;
+
+
+}
+
+.webgl
+{
+    position: fixed;
+    top: 0;
+    left: 0;
+    outline: none;
+}
