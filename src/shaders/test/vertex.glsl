@@ -22,15 +22,16 @@ void main() {
 
 	float r = length(d);
 
-	p.z = r*sin(3.1415926*blend);
+	p.z = 0.5*r*sin(3.1415926*blend);
 
+	vColor = vec3(1.0,0.,0.);
 	vec2 uvSource = source/dimensions.x;
 	vec2 uvTarget = target/dimensions.x;
 
 	vColor = mix(texture2D(sourceTex, uvSource).rgb,
 	 			 texture2D(targetTex, uvTarget).rgb, 
 				 blend);
-	p.xy -= .5*dimensions.xy;
+	p.xy -= .5*dimensions;
 	p *= 1. / dimensions.x;
 	p.y *= -1.;
 	vec4 mvPosition = modelViewMatrix * vec4(p, 1.);

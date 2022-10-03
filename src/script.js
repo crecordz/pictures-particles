@@ -11,9 +11,7 @@ import testFragmentShader from './shaders/test/fragment.glsl'
  */
 // Debug
 const gui = new dat.GUI()
-
-// Canvas
-// const canvas = document.querySelector('canvas.webgl')
+const debugObject = {}
 /**
  * Sizes
  */
@@ -26,7 +24,7 @@ const gui = new dat.GUI()
  */
  const renderer = new THREE.WebGLRenderer()
  renderer.setSize(sizes.width, sizes.height)
- renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
+ renderer.setPixelRatio(window.devicePixelRatio)
 // Scene
 const scene = new THREE.Scene()
 scene.background = new THREE.Color(0x000000);
@@ -49,7 +47,7 @@ container.appendChild(renderer.domElement);
     });
   }
 
-let images = ['/textures/1.jpg', '/textures/2.jpeg']
+let images = ['/textures/00.jpg', '/textures/01.jpg']
 let canvas = document.createElement('canvas');
 let ctx = canvas.getContext('2d');
 document.body.appendChild(canvas);
@@ -67,7 +65,7 @@ let material
 
     obj.forEach((image,index) => {
       let img = loadedImages[index];
-
+     
       canvas.width = img.naturalWidth;
       canvas.height = img.naturalHeight;
       
@@ -143,7 +141,7 @@ let material
       uniforms: {
         sourceTex: { type: 't', value: obj[0].texture },
         targetTex: { type: 't', value: obj[1].texture },
-        blend: { type: 'f', value: 0 },
+        blend: { type: 'f', value: 0.0 },
         size: { type: 'f', value: 2.1 },//window.devicePixelRatio },
         dimensions: { type: 'v2', value: new THREE.Vector2(w,h) }
       },
@@ -155,28 +153,42 @@ let material
     scene.add(points);
   })
 
+  const Sound = new Audio('/1.mp3')
 
+  function effect(){
+    if (material.uniforms.blend.value == 0.0){
+      gsap.
+      to(material.uniforms.blend, 2,{value:1},0) 
+    }
+    else{
+      gsap.
+      to(material.uniforms.blend, 2,{value:0},1) 
+    }
+    Sound.currentTime =0
+   Sound.play()
+  }
   renderer.domElement.addEventListener('click', () => {
-    
-    gsap.
-      to(material.uniforms.blend, 3,{value:1},0)
-      
+    effect()
   })
 
-// window.addEventListener('resize', () =>
-// {
-//     // Update sizes
-//     sizes.width = window.innerWidth
-//     sizes.height = window.innerHeight
+debugObject.Next = () => {
+  effect()
+}  
+gui.add(debugObject, 'Next')
+window.addEventListener('resize', () =>
+{
+    // Update sizes
+    sizes.width = window.innerWidth
+    sizes.height = window.innerHeight
 
-//     // Update camera
-//     camera.aspect = sizes.width / sizes.height
-//     camera.updateProjectionMatrix()
+    // Update camera
+    camera.aspect = sizes.width / sizes.height
+    camera.updateProjectionMatrix()
 
-//     // Update renderer
-//     renderer.setSize(sizes.width, sizes.height)
-//     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
-// })
+    // Update renderer
+    renderer.setSize(sizes.width, sizes.height)
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
+})
 
 /**
  * Camera
